@@ -7,8 +7,10 @@ import rx.subjects.PublishSubject;
 
 /**
  * Created by helin on 2016/11/11 10:41.
+ * Activity生命周期管理
+ *
+ * 把所有生命周期事件都传给了PublishSubject
  */
-
 public class BaseActivity extends AppCompatActivity {
 
     public final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject = PublishSubject.create();

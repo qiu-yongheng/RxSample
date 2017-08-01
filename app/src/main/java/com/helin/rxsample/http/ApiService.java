@@ -13,12 +13,13 @@ import rx.Observable;
 
 /**
  * Created by helin on 2016/10/9 17:09.
+ *
+ * retrofit网络请求接口
  */
 
 public interface ApiService {
     @GET("/student/mobileRegister")
     Observable<HttpResult<UserEntity>> login(@Query("phone") String phone, @Query("password") String psw);
-
 
     @GET("top250")
     Observable<HttpResult<List<Subject>>> getTopMovie(@Query("start") int start, @Query("count") int count);

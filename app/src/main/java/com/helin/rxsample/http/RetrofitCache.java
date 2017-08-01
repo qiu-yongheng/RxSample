@@ -10,11 +10,13 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by helin on 2016/11/10 10:41.
+ * <p>
+ * retrofit缓存
  */
 
 public class RetrofitCache {
     /**
-     * @param cacheKey 缓存的Key
+     * @param cacheKey     缓存的Key
      * @param fromNetwork
      * @param isSave       是否缓存
      * @param forceRefresh 是否强制刷新
@@ -23,11 +25,16 @@ public class RetrofitCache {
      */
     public static <T> Observable<T> load(final String cacheKey,
                                          Observable<T> fromNetwork,
-                                         boolean isSave, boolean forceRefresh) {
+                                         boolean isSave,
+                                         boolean forceRefresh) {
+        /**
+         * 获取缓存
+         */
         Observable<T> fromCache = Observable.create(new Observable.OnSubscribe<T>() {
             @Override
             public void call(Subscriber<? super T> subscriber) {
-                T cache = (T) Hawk.get(cacheKey);
+                // 缓存数据到Hawk
+                T cache = Hawk.get(cacheKey);
                 if (cache != null) {
                     subscriber.onNext(cache);
                 } else {
@@ -35,6 +42,8 @@ public class RetrofitCache {
                 }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+
+
         //是否缓存
         if (isSave) {
             /**
@@ -43,23 +52,25 @@ public class RetrofitCache {
             fromNetwork = fromNetwork.map(new Func1<T, T>() {
                 @Override
                 public T call(T result) {
+                    // 缓存数据到Hawk
                     Hawk.put(cacheKey, result);
                     return result;
                 }
             });
         }
+
         //强制刷新
         if (forceRefresh) {
+            // 不读取缓存
             return fromNetwork;
         } else {
-//            return Observable.concat(fromCache, fromNetwork).first();
+            // 判断是否需要读取缓存
             return Observable.concat(fromCache, fromNetwork).takeFirst(new Func1<T, Boolean>() {
                 @Override
                 public Boolean call(T t) {
-                    return t!=null;
+                    return t != null;
                 }
             });
         }
     }
-
 }

@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         dialogHandler = new SimpleLoadDialog(MainActivity.this, null, true);
         mText = (TextView) findViewById(R.id.text);
         ((Button) findViewById(R.id.btn)).setOnClickListener(new View.OnClickListener() {
@@ -38,6 +39,10 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 提示开发者在系统内存不足的时候，通过处理部分资源来释放内存，从而避免被 Android 系统杀死
+     * @param level
+     */
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);

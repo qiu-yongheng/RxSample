@@ -2,6 +2,8 @@ package com.helin.rxsample.http;
 
 /**
  * Created by helin on 2016/10/10 11:52.
+ *
+ * 处理网络请求的异常码
  */
 
 public class ApiException extends RuntimeException{

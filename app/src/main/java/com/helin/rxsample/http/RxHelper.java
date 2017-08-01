@@ -15,6 +15,7 @@ import rx.subjects.PublishSubject;
 
 /**
  * Created by helin on 2016/11/9 17:02.
+ *
  */
 
 public class RxHelper {
@@ -28,7 +29,8 @@ public class RxHelper {
      * @return
      */
     @NonNull
-    public <T> Observable.Transformer<T, T> bindUntilEvent(@NonNull final ActivityLifeCycleEvent event, final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject) {
+    public <T> Observable.Transformer<T, T> bindUntilEvent(@NonNull final ActivityLifeCycleEvent event,
+                                                           final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject) {
         return new Observable.Transformer<T, T>() {
             @Override
             public Observable<T> call(Observable<T> sourceObservable) {
@@ -44,12 +46,12 @@ public class RxHelper {
         };
     }
 
-
     /**
      * @param <T>
      * @return
      */
-    public static <T> Observable.Transformer<HttpResult<T>, T> handleResult(final ActivityLifeCycleEvent event, final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject) {
+    public static <T> Observable.Transformer<HttpResult<T>, T> handleResult(final ActivityLifeCycleEvent event,
+                                                                            final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject) {
         return new Observable.Transformer<HttpResult<T>, T>() {
             @Override
             public Observable<T> call(Observable<HttpResult<T>> tObservable) {
@@ -75,12 +77,6 @@ public class RxHelper {
     }
 
     /**
-     *
-     *
-     */
-
-
-    /**
      * 创建成功的数据
      *
      * @param data
@@ -99,7 +95,6 @@ public class RxHelper {
                 }
             }
         });
-
     }
 
 }

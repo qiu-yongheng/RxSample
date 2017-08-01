@@ -9,6 +9,7 @@ import rx.Subscriber;
 
 /**
  * Created by helin on 2016/10/10 15:49.
+ * 订阅者
  */
 
 public  abstract class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCancelListener{
@@ -31,7 +32,6 @@ public  abstract class ProgressSubscriber<T> extends Subscriber<T> implements Pr
      */
     public void showProgressDialog(){
         if (dialogHandler != null) {
-//            dialogHandler.obtainMessage(SimpleLoadDialog.SHOW_PROGRESS_DIALOG).sendToTarget();
             dialogHandler.show();
         }
     }
@@ -46,31 +46,37 @@ public  abstract class ProgressSubscriber<T> extends Subscriber<T> implements Pr
      */
     private void dismissProgressDialog(){
         if (dialogHandler != null) {
-//            dialogHandler.obtainMessage(SimpleLoadDialog.DISMISS_PROGRESS_DIALOG).sendToTarget();
-            dialogHandler.dismiss();;
+            dialogHandler.dismiss();
             dialogHandler=null;
         }
     }
+
     @Override
     public void onError(Throwable e) {
         e.printStackTrace();
-        if (false) { //这里自行替换判断网络的代码
+        // TODO 这里自行替换判断网络的代码
+        if (false) {
             _onError("网络不可用");
         } else if (e instanceof ApiException) {
             _onError(e.getMessage());
         } else {
             _onError("请求失败，请稍后再试...");
         }
+
+        // 隐藏Dialog
         dismissProgressDialog();
     }
 
-
+    /**
+     * ProgressCancelListener的回调
+     */
     @Override
     public void onCancelProgress() {
         if (!this.isUnsubscribed()) {
             this.unsubscribe();
         }
     }
+
     protected abstract void _onNext(T t);
     protected abstract void _onError(String message);
 }
