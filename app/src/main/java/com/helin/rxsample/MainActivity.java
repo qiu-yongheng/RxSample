@@ -6,15 +6,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.helin.rxsample.base.ActivityLifeCycleEvent;
-import com.helin.rxsample.base.BaseActivity;
-import com.helin.rxsample.enity.Subject;
-import com.helin.rxsample.http.Api;
-import com.helin.rxsample.http.HttpUtil;
-import com.helin.rxsample.http.ProgressSubscriber;
-import com.helin.rxsample.view.SimpleLoadDialog;
+import com.kc.lite_rxjava.base.ActivityLifeCycleEvent;
+import com.kc.lite_rxjava.base.BaseActivity;
+import com.kc.lite_rxjava.http.Api;
+import com.kc.lite_rxjava.http.HttpUtil;
+import com.kc.lite_rxjava.view.SimpleLoadDialog;
 
-import java.util.List;
 
 import rx.Observable;
 
@@ -48,6 +45,9 @@ public class MainActivity extends BaseActivity {
         super.onTrimMemory(level);
     }
 
+    /**
+     * 会取消请求
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -57,15 +57,6 @@ public class MainActivity extends BaseActivity {
     private void doGet() {
         //获取豆瓣电影TOP 100
         Observable ob = Api.getDefault().getTopMovie(0, 100);
-        //嵌套请求
-//        ob.flatMap(new Func1<String, Observable<HttpResult<Subject>>>() {
-//
-//            @Override
-//            public Observable<HttpResult<Subject>> call(String s) {
-//                return Api.getDefault().getUser("aa");
-//            }
-//        });
-
 
         HttpUtil.getInstance().toSubscribe(ob, new ProgressSubscriber<List<Subject>>(this) {
             @Override
